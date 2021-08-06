@@ -37,12 +37,10 @@ class App extends React.Component{
               ...snapShot.data()
             }
           })
-        });
-        
+        });        
       }
       //if userAuth is null then we change the state in our application also
       this.setState({ currentUser: userAuth });
-     
      
     })
   }
