@@ -7,7 +7,9 @@ import SingInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 import React from 'react';
 import {connect} from 'react-redux';
+import { createStructuredSelector } from 'reselect'; 
 import { setCurrentUser } from './redux/user/user.actions';
+import { selectCurrentUser } from './redux/user/user.selectors';
 
 
 class App extends React.Component{
@@ -31,7 +33,7 @@ class App extends React.Component{
       if(userAuth){
 
         // we take the user object from auth library, then we pass it to createUserProfileDocument 
-        // function that extracts the values from the object and store it to the database
+        // function that extracts the values from the object and store it into the database
 
         const userRefs = await createUserProfileDocument(userAuth);  
 
@@ -72,11 +74,13 @@ class App extends React.Component{
   }
 
 }
-const MapStateToProps = ({user}) =>({
-  currentUser: user.currentUser
+
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+
 })
 const mapDispatchToProps = dispatch =>({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 })
 
-export default connect(MapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

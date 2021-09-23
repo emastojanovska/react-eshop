@@ -3,6 +3,7 @@ import { ReactComponent as ShoppingIcon } from '../../assets/shopping-bag.svg';
 import { connect } from 'react-redux';
 import { selectCartItemsCount } from '../../redux/cart/cart.selectors';
 import { toggleCartHidden } from '../../redux/cart/cart.actions';
+import { createStructuredSelector } from 'reselect';
 import './cart-icon.styles.scss';
 
 const CartIcon = ( {toggleCartHidden, countNumber } ) =>(
@@ -16,7 +17,7 @@ const mapDispatchToProps = dispatch =>({
     toggleCartHidden: () => dispatch(toggleCartHidden())
 })
 
-const MapStateToProps = (state) =>(
+const MapStateToProps = createStructuredSelector(
     //This is a selector and we get a brand new value when the state change,
     //even tho the state is something we don't care about and it doesn't change the 
     //total quantity value. This is bad for performance so we need to store this
@@ -30,7 +31,10 @@ const MapStateToProps = (state) =>(
     //***yarn add reselect***
         // {countNumber: cartItems.reduce( 
         // (totalQuantityItems, cartItem)  => totalQuantityItems + cartItem.quantity, 0)}
-      {  countNumber: selectCartItemsCount(state)}
+
+    //this is bad example!!!!!!! Due to countNumber being a primitive (integer),
+    //redux will do a shallow equality check under the hood between state changes in mapStateToProps
+      {  countNumber: selectCartItemsCount}
 )
 
 export default connect(MapStateToProps, mapDispatchToProps)(CartIcon);
