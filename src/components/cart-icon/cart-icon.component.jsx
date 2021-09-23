@@ -34,6 +34,10 @@ const MapStateToProps = createStructuredSelector(
 
     //this is bad example!!!!!!! Due to countNumber being a primitive (integer),
     //redux will do a shallow equality check under the hood between state changes in mapStateToProps
+    //The take away here is that redux's mapStateToProps has a shallow equality check for every value in the object;
+    //It won't replace values if they pass a shallow equality check which means it won't needlessly re-render,
+    //but if we have transformation logic it's still valuable to memoize it with a selector to save us 
+    //running duplicate logic to get the same output.
       {  countNumber: selectCartItemsCount}
 )
 

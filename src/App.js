@@ -2,6 +2,7 @@ import './App.css';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
+import CheckOutPage from './pages/checkout/checkout.component'
 import Header from './components/header/header.component';
 import SingInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
@@ -13,13 +14,6 @@ import { selectCurrentUser } from './redux/user/user.selectors';
 
 
 class App extends React.Component{
-
-  constructor(){
-    super();
-    this.state = {
-      currentUser: null
-    }
-  }
 
   //Whenever we call the onAuthStateChanged() or onSnapshot() methods from our auth library 
   //or referenceObject, we get back a function that lets us unsubscribe from the listener
@@ -65,7 +59,8 @@ class App extends React.Component{
         <Header></Header>
         <Switch>
           <Route exact path='/' component={HomePage}></Route>
-          <Route exact path='/shop' component={ShopPage}></Route>
+          <Route exact path='/checkout' component={CheckOutPage}></Route>
+          <Route path='/shop' component={ShopPage}></Route>
           <Route exact path='/signin' render={() => this.props.currentUser ? 
           (<Redirect to='/'/>) : (<SingInAndSignUpPage/>)}></Route>
         </Switch>
@@ -77,8 +72,8 @@ class App extends React.Component{
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
-
 })
+
 const mapDispatchToProps = dispatch =>({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 })
