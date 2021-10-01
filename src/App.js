@@ -42,6 +42,9 @@ class App extends React.Component{
       }
       //if userAuth is null then we change the state in our application also
       setCurrentUser(userAuth);
+      //We are setting the data here because app.js only mounts once 
+      //We map the array because we don't need the id, url...
+      //addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) =>({title, items})));
      
     })
   }
@@ -71,7 +74,8 @@ class App extends React.Component{
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  //collectionsArray: selectCollectionsForPreview
 })
 
 const mapDispatchToProps = dispatch =>({

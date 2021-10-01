@@ -1,10 +1,14 @@
 import React from 'react';
-import './custom.button.styles.scss';
+import {CustomButtonContainer} from './custom-button.styles'
 
-const CustomButton = ({children, signedWithGoogle, inverted, ...otherProps}) =>(
-    <button className={` ${inverted ? 'inverted' : ''} ${signedWithGoogle ? 'google-sign-in' : ''} custom-button`} {...otherProps}>
+const CustomButton = ({children, ...props}) =>(
+    <CustomButtonContainer {...props}>
         {children}
-    </button>
+    </CustomButtonContainer>
+
+    //If we didn't use styled components 
+    //then we'd need the classname of the button written in the following way:
+    //className={` ${inverted ? 'inverted' : ''} ${signedWithGoogle ? 'google-sign-in' : ''} custom-button`} 
 )
 
 export default CustomButton;
