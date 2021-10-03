@@ -1,17 +1,23 @@
 import { createStore, applyMiddleware } from 'redux';
 import { persistStore } from 'redux-persist';
 import logger from 'redux-logger';
+//import thunk from 'redux-thunk'
 import rootReducer from './root-reducer';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './root-saga';
 
-//The logger middleware is just a function that catches the fired actions,
-//console.log them out and passes them to the root reducer
-const middlewares = [];
+//Replacing thunk with saga
+
+const sagaMiddleware = createSagaMiddleware();
+//const middlewares = [thunk];
+const middlewares = [sagaMiddleware]
 
 if(process.env.NODE_ENV === 'development'){
     middlewares.push(logger);
 }
 
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
+sagaMiddleware.run(rootSaga);
 
 //Persisted version of the store
 export const persistor = persistStore(store);

@@ -2,7 +2,8 @@ import React from 'react';
 import CustomButton from '../custom-button/custom-button.component';
 import FormInput from '../form-input/form-input.component';
 import '../sign-up/sign-up.styles.scss';
-import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
+import { connect } from 'react-redux';
+import { signUpStart } from '../../redux/user/user.actions'
 
 
 class SignUp extends React.Component{
@@ -18,27 +19,13 @@ class SignUp extends React.Component{
 
     handleSubmit = async event => {
         event.preventDefault();
+        const { signUpStart } = this.props;
         const { displayName, email, password, confirmPassword } = this.state;
         if( password !== confirmPassword ) {
             alert("Password do not match!");
             return;
-        }
-
-        try{
-            //this returns user auth object that is on the key 'user', so we want to destructure it
-            const { user } = await auth.createUserWithEmailAndPassword(email, password);
-            //we wait this to finish so we can reset the state
-            await createUserProfileDocument(user, { displayName });     
-            this.setState({
-                displayName: '',
-                email: '',
-                password: '',
-                confirmPassword: ''
-            });
-
-        }catch(error){
-            console.error(error);
-        }          
+        }    
+        signUpStart(email, password, displayName);
     }
 
     handleChange = event =>{
@@ -95,4 +82,8 @@ class SignUp extends React.Component{
         )
     }
 }
-export default SignUp;
+
+const mapDispatchToProps = dispatch =>({
+    signUpStart: (email, password, displayName) => dispatch(signUpStart({email, password, displayName}))
+})
+export default connect(null, mapDispatchToProps)(SignUp);
