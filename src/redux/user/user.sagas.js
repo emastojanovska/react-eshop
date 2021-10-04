@@ -55,9 +55,7 @@ export function* signOut(){
 
 export function* signUp({ payload: { email, password, displayName } }){
     try{
-        console.log(email, password, displayName)
         const { user } = yield auth.createUserWithEmailAndPassword(email, password);
-        console.log(user)
         yield put(signUpSuccess({user, additionalData: {displayName}}));
     }catch(error){
         yield put(signUpFailure(error))
